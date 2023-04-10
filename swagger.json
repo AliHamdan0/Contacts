@@ -1,0 +1,317 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Swagger Contacts - OpenAPI 3.0",
+    "description": "Contacts Project",
+    "version": "1.0.11"
+  },
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Creating and signing users"
+    },
+    {
+      "name": "Contacts",
+      "description": "users contacts"
+    }
+  ],
+  "paths": {
+    "/api/users/register": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "register a new user",
+        "description": "register a new user",
+        "requestBody": {
+          "description": "adding a new user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Users"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsersResponses"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/users/login": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "login user",
+        "description": "login user",
+        "requestBody": {
+          "description": "login user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserLogin"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful log-in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/login"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/users/current": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "get user info",
+        "description": "get user info",
+        "responses": {
+          "200": {
+            "description": "user's data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsersResponses"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/contacts/": {
+      "get": {
+        "tags": ["Contacts"],
+        "summary": "get contacts for a specific user",
+        "description": "get contacts for a specific user",
+        "responses": {
+          "200": {
+            "description": "user's contacts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/contacts"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Contacts"],
+        "summary": "post a new contact",
+        "description": "post a new contact",
+        "requestBody": {
+          "description": "new contact information",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/contact"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "post a new contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/contact"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/contacts/{id}": {
+      "get": {
+        "tags": ["Contacts"],
+        "summary": "get a contact by id",
+        "description": "get a contact by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id of the contact",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "contact by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/contact"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Contacts"],
+        "summary": "create a new contact",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id of the contact",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/contact"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Contacts"],
+        "summary": "delete a new contact",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id of the contact",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/contact"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Users": {
+        "required": ["username", "email", "password"],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "ali"
+          },
+          "email": {
+            "type": "string",
+            "example": "ali@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "123"
+          }
+        }
+      },
+      "UserLogin": {
+        "required": ["email", "password"],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "ali@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "123"
+          }
+        }
+      },
+      "UsersResponses": {
+        "required": ["id", "username", "email"],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "033043242"
+          },
+          "username": {
+            "type": "string",
+            "example": "ali"
+          },
+          "email": {
+            "type": "string",
+            "example": "ali@gmail.com"
+          }
+        }
+      },
+      "login": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          }
+        }
+      },
+      "contact": {
+        "type": "object",
+        "properties": {
+          "username": { "type": "string", "example": "ali" },
+          "email": { "type": "string", "example": "ali@gmail.com" },
+          "phone": { "type": "string", "example": "09993131" }
+        }
+      },
+      "contacts": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/contact"
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
+}
