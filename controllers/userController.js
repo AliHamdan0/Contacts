@@ -14,9 +14,11 @@ const addUser = asyncHandler(async (req, res) => {
     password: hashedPassword,
     email,
   });
-  if (newUser) res.status(200).json({ _id: newUser._id, username, email });
-  res.status(400);
-  throw new Error('Data is not valid');
+  try {
+    if (newUser) res.status(200).json({ _id: newUser._id, username, email });
+    res.status(400);
+    throw new Error('Data is not valid');
+  } catch (e) {}
 });
 
 //@desc login user
@@ -25,24 +27,27 @@ const addUser = asyncHandler(async (req, res) => {
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await Users.findOne({ email });
-  if (user && (await bcrypt.compare(password, user.password))) {
-    const accessToken = jwt.sign(
-      {
-        user: {
-          username: user.username,
-          email: user.email,
-          id: user._id,
+  try {
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const accessToken = await jwt.sign(
+        {
+          user: {
+            username: user.username,
+            email: user.email,
+            id: user._id,
+          },
         },
-      },
-      process.env.TOKEN_SECRET,
-      {
-        expiresIn: '15m',
-      }
-    );
-    res.status(200).json({ accessToken });
+        process.env.TOKEN_SECRET,
+        {
+          expiresIn: '15m',
+        }
+      );
+      res.status(200).json({ accessToken });
+    }
+  } catch (e) {
+    res.status(401);
+    throw new Error('email or password is not valid');
   }
-  res.status(401);
-  throw new Error('email or password is not valid');
 });
 
 //@desc get user info
